@@ -1,26 +1,155 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ── Colors ─────────────────────────────────────────── */
+  --color-ink:        #111111;
+  --color-canvas:     #F5F3EF;
+  --color-stone:      #8A8985;
+  --color-amber:      #C8964A;
+  --color-white:      #FFFFFF;
+  --color-border:     #E2DFDA;
+  --color-muted:      #D4D0C8;
+
+  /* ── Typography ─────────────────────────────────────── */
+  --font-display:     var(--font-playfair), Georgia, serif;
+  --font-sans:        var(--font-inter), system-ui, sans-serif;
+
+  /* ── Type scale ─────────────────────────────────────── */
+  --font-size-2xs:    0.6875rem;   /* 11px */
+  --font-size-xs:     0.75rem;     /* 12px */
+  --font-size-sm:     0.875rem;    /* 14px */
+  --font-size-base:   1rem;        /* 16px */
+  --font-size-lg:     1.125rem;    /* 18px */
+  --font-size-xl:     1.25rem;     /* 20px */
+  --font-size-2xl:    1.5rem;      /* 24px */
+  --font-size-3xl:    1.875rem;    /* 30px */
+  --font-size-4xl:    2.25rem;     /* 36px */
+  --font-size-5xl:    3rem;        /* 48px */
+  --font-size-6xl:    3.75rem;     /* 60px */
+  --font-size-7xl:    4.5rem;      /* 72px */
+  --font-size-8xl:    6rem;        /* 96px */
+  --font-size-9xl:    8rem;        /* 128px */
+
+  /* ── Spacing / Container ─────────────────────────────── */
+  --spacing-px:       1px;
+  --container-site:   1400px;
+  --spacing-section:  6rem;
+
+  /* ── Border radius ───────────────────────────────────── */
+  --radius-none:      0;
+  --radius-sm:        0.125rem;
+  --radius-DEFAULT:   0.25rem;
+  --radius-full:      9999px;
+
+  /* ── Transitions ─────────────────────────────────────── */
+  --transition-fast:  150ms ease;
+  --transition-base:  300ms ease;
+  --transition-slow:  600ms ease;
+  --transition-xslow: 900ms ease;
+
+  /* ── Z-index ─────────────────────────────────────────── */
+  --z-navbar:         50;
+  --z-overlay:        60;
+  --z-cursor:         70;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Base reset & defaults ─────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  min-height: 100dvh;
+}
+
+/* ── Selection ─────────────────────────────────────────── */
+::selection {
+  background-color: var(--color-ink);
+  color: var(--color-canvas);
+}
+
+/* ── Focus visible ─────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+/* ── Reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stone);
+}
+
+/* ── Typography utilities ──────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* ── Site container ────────────────────────────────────── */
+.container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-site {
+    padding-inline: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-site {
+    padding-inline: 5rem;
+  }
+}
+
+/* ── Section spacing ───────────────────────────────────── */
+.section-py {
+  padding-top: var(--spacing-section);
+  padding-bottom: var(--spacing-section);
+}
+
+@media (min-width: 1024px) {
+  .section-py {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
 }
