@@ -40,7 +40,7 @@ export function Navbar() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-500",
           navScrolled
-            ? "bg-canvas/95 backdrop-blur-md border-b border-border"
+            ? "bg-canvas border-b border-border"
             : "bg-transparent"
         )}
         initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
