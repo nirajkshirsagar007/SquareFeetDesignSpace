@@ -34,6 +34,8 @@
   --spacing-px:       1px;
   --container-site:   1400px;
   --spacing-section:  6rem;
+  --navbar-height:    4rem;
+  --navbar-height-md: 5rem;
 
   /* ── Border radius ───────────────────────────────────── */
   --radius-none:      0;
@@ -46,11 +48,6 @@
   --transition-base:  300ms ease;
   --transition-slow:  600ms ease;
   --transition-xslow: 900ms ease;
-
-  /* ── Z-index ─────────────────────────────────────────── */
-  --z-navbar:         50;
-  --z-overlay:        60;
-  --z-cursor:         70;
 }
 
 /* ── Base reset & defaults ─────────────────────────────── */
@@ -138,6 +135,17 @@ body {
 @media (min-width: 1280px) {
   .container-site {
     padding-inline: 5rem;
+  }
+}
+
+/* ── Layout Offsets ────────────────────────────────────── */
+.pt-nav {
+  padding-top: var(--navbar-height);
+}
+
+@media (min-width: 768px) {
+  .pt-nav {
+    padding-top: var(--navbar-height-md);
   }
 }
 

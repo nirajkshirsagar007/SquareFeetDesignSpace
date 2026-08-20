@@ -25,11 +25,15 @@ export function Navbar() {
   const isHome = pathname === "/";
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
+    const handleScroll = () => {
+      // Keep transparent over the full hero screen (100vh) on the homepage
+      const threshold = isHome ? window.innerHeight - 80 : 60;
+      setScrolled(window.scrollY > threshold);
+    };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHome]);
 
 
   const navScrolled = scrolled || !isHome;
@@ -37,18 +41,20 @@ export function Navbar() {
   return (
     <>
       <motion.header
-        className={cn(
-          "fixed inset-x-0 top-0 z-navbar transition-all duration-500",
-          navScrolled
-            ? "bg-canvas/95 backdrop-blur-md border-b border-border"
-            : "bg-transparent"
-        )}
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+        navScrolled
+          ? "bg-canvas/95 backdrop-blur-md border-b border-border"
+          : "bg-canvas/95 backdrop-blur-md border-b border-border lg:bg-transparent lg:backdrop-blur-none lg:border-transparent"
+      )}
         initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <div className="container-site flex h-16 items-center justify-between md:h-20">
-          <Wordmark inverted={!navScrolled} />
+          <div className="transition-all duration-300">
+          <Wordmark inverted={false} />
+        </div>
 
           <nav
             className="hidden items-center gap-8 lg:flex"
@@ -58,14 +64,12 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn(
-                  "relative font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-amber focus-visible:outline-offset-2",
-                  navScrolled
-                    ? "text-ink hover:text-amber"
-                    : "text-canvas hover:text-canvas/70",
-                  pathname === link.href &&
-                    "text-amber after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-amber"
-                )}
+               className={cn(
+                "relative font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-amber focus-visible:outline-offset-2",
+                "text-ink hover:text-amber",
+                pathname === link.href &&
+                  "text-amber after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-amber"
+              )}
               >
                 {link.label}
               </Link>
@@ -73,10 +77,7 @@ export function Navbar() {
           </nav>
 
           <button
-            className={cn(
-              "flex h-10 w-10 items-center justify-center transition-colors lg:hidden",
-              navScrolled ? "text-ink hover:text-amber" : "text-canvas"
-            )}
+            className="flex h-10 w-10 items-center justify-center transition-all duration-300 text-ink hover:text-amber lg:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open navigation menu"
             aria-expanded={mobileOpen}

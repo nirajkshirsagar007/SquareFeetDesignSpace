@@ -1,27 +1,36 @@
 import type { Metadata } from "next";
+import { Hero } from "@/components/home/Hero";
+import { Intro } from "@/components/home/Intro";
+import { Services } from "@/components/home/Services";
+import { FeaturedProjects } from "@/components/home/FeaturedProjects";
+import { Stats } from "@/components/home/Stats";
+import { Process } from "@/components/home/Process";
+import { CaseStudy } from "@/components/home/CaseStudy";
+import { Sustainability } from "@/components/home/Sustainability";
+import { Testimonials } from "@/components/home/Testimonials";
+import { Clients } from "@/components/home/Clients";
+import { CTA } from "@/components/home/CTA";
 
 export const metadata: Metadata = {
   title: "SquareFeet Design Space — Architecture & Construction",
   description:
-    "We design and build spaces where architecture, engineering, and human experience meet.",
+    "We design and build spaces where architecture, engineering and human experience meet. Architecture, construction and interior design across India.",
 };
 
 export default function Home() {
   return (
-    <div className="flex min-h-dvh items-center justify-center">
-      <div className="container-site text-center">
-        <p className="font-sans text-2xs tracking-[0.2em] uppercase text-stone">
-          Phase 1 Foundation
-        </p>
-        <h1 className="font-display mt-4 text-6xl text-ink lg:text-8xl">
-          SquareFeet
-          <br />
-          Design Space
-        </h1>
-        <p className="mt-6 font-sans text-base text-stone max-w-md mx-auto">
-          Architecture. Engineering. Construction.
-        </p>
-      </div>
-    </div>
+    <>
+      <Hero />
+      <Intro />
+      <Services />
+      <FeaturedProjects />
+      <Stats />
+      <Process />
+      <CaseStudy />
+      <Sustainability />
+      <Testimonials />
+      <Clients />
+      <CTA />
+    </>
   );
 }
