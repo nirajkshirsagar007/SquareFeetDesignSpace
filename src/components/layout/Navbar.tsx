@@ -25,11 +25,15 @@ export function Navbar() {
   const isHome = pathname === "/";
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
+    const handleScroll = () => {
+      // Keep transparent over the full hero screen (100vh) on the homepage
+      const threshold = isHome ? window.innerHeight - 80 : 60;
+      setScrolled(window.scrollY > threshold);
+    };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHome]);
 
 
   const navScrolled = scrolled || !isHome;
@@ -40,7 +44,7 @@ export function Navbar() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-500",
           navScrolled
-            ? "bg-canvas border-b border-border"
+            ? "bg-canvas/95 backdrop-blur-md border-b border-border"
             : "bg-transparent"
         )}
         initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
