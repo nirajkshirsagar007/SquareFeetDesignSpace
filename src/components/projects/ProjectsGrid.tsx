@@ -66,7 +66,8 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
             >
               <ProjectCard 
                 project={project} 
-                aspectClass="aspect-[4/3] md:aspect-[3/4] lg:aspect-[4/5]" 
+                aspectClass="aspect-[4/3] md:aspect-[3/4] lg:aspect-[4/5]"
+                priority={i < 4}
               />
             </motion.div>
           ))}
