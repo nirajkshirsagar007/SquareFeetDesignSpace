@@ -66,7 +66,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <>
           <motion.div
             key="overlay"
-            className="fixed inset-0 z-overlay bg-ink/40 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[100] bg-ink/40 backdrop-blur-sm lg:hidden"
             variants={overlayVariants}
             initial="hidden"
             animate="visible"
@@ -78,7 +78,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
           <motion.nav
             key="menu"
-            className="fixed inset-y-0 right-0 z-overlay flex w-full max-w-sm flex-col bg-canvas px-8 py-10 lg:hidden"
+            className="fixed inset-y-0 right-0 z-[100] flex w-full max-w-sm flex-col bg-canvas px-8 py-10 lg:hidden"
             variants={menuVariants}
             initial="hidden"
             animate="visible"

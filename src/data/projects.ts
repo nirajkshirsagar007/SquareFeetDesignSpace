@@ -24,6 +24,12 @@ export const projects: Project[] = [
       "Steel profiles",
       "Handmade brick",
     ],
+    timeline: [
+      { phase: "Concept Design", date: "Jan 2022" },
+      { phase: "Planning & Approvals", date: "Jun 2022" },
+      { phase: "Construction Start", date: "Sep 2022" },
+      { phase: "Handover", date: "Mar 2024" },
+    ],
     coverImage:
       "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&q=85",
     gallery: [
@@ -57,6 +63,11 @@ export const projects: Project[] = [
       "Acoustic plaster",
       "Terrazzo details",
     ],
+    timeline: [
+      { phase: "Brief & Strategy", date: "May 2022" },
+      { phase: "Interior Fit-out", date: "Oct 2023" },
+      { phase: "Completion", date: "Aug 2024" },
+    ],
     coverImage:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=85",
     gallery: [
@@ -88,6 +99,12 @@ export const projects: Project[] = [
       "Corten steel accents",
       "Lime plaster",
     ],
+    timeline: [
+      { phase: "Site Study", date: "Feb 2023" },
+      { phase: "Excavation", date: "Nov 2023" },
+      { phase: "Structure", date: "Present" },
+      { phase: "Expected Completion", date: "Dec 2025" },
+    ],
     coverImage:
       "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1600&q=85",
     gallery: [
@@ -117,6 +134,11 @@ export const projects: Project[] = [
       "Weathering steel",
       "Bamboo screens",
       "Recycled timber",
+    ],
+    timeline: [
+      { phase: "Concept", date: "Apr 2020" },
+      { phase: "Construction", date: "Feb 2021" },
+      { phase: "Inauguration", date: "May 2023" },
     ],
     coverImage:
       "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=85",

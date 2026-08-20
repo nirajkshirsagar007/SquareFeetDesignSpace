@@ -21,6 +21,7 @@ export interface Project {
   description: string;
   concept: string;
   materials: string[];
+  timeline?: { phase: string; date: string }[];
   coverImage: string;
   gallery: string[];
   featured: boolean;
