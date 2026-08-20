@@ -45,7 +45,7 @@ export function Navbar() {
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         navScrolled
           ? "bg-canvas/95 backdrop-blur-md border-b border-border"
-          : "bg-transparent border-b border-transparent"
+          : "bg-canvas/95 backdrop-blur-md border-b border-border lg:bg-transparent lg:backdrop-blur-none lg:border-transparent"
       )}
         initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -77,12 +77,7 @@ export function Navbar() {
           </nav>
 
           <button
-            className={cn(
-              "flex h-10 w-10 items-center justify-center transition-all duration-300 lg:hidden",
-              navScrolled
-                ? "text-ink hover:text-amber"
-                : "rounded-full bg-ink/20 text-canvas backdrop-blur-md hover:bg-ink/30 hover:text-amber"
-            )}
+            className="flex h-10 w-10 items-center justify-center transition-all duration-300 text-ink hover:text-amber lg:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open navigation menu"
             aria-expanded={mobileOpen}
