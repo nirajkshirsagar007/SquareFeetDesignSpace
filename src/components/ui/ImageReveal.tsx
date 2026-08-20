@@ -46,7 +46,7 @@ export function ImageReveal({
           initial={shouldReduceMotion ? false : { scale: 1.08 }}
           animate={isInView ? { scale: 1 } : {}}
           transition={{ duration: 1.1, delay, ease: "easeInOut" }}
-          className="h-full w-full"
+          className="relative h-full w-full"
         >
           {fill ? (
             <Image
