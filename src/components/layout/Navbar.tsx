@@ -38,7 +38,7 @@ export function Navbar() {
     <>
       <motion.header
         className={cn(
-          "fixed inset-x-0 top-0 z-navbar transition-all duration-500",
+          "fixed inset-x-0 top-0 z-50 transition-all duration-500",
           navScrolled
             ? "bg-canvas/95 backdrop-blur-md border-b border-border"
             : "bg-transparent"
@@ -48,7 +48,9 @@ export function Navbar() {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <div className="container-site flex h-16 items-center justify-between md:h-20">
-          <Wordmark inverted={!navScrolled} />
+          <div className={cn("transition-all duration-300", !navScrolled && "drop-shadow-md")}>
+            <Wordmark inverted={!navScrolled} />
+          </div>
 
           <nav
             className="hidden items-center gap-8 lg:flex"
@@ -62,7 +64,7 @@ export function Navbar() {
                   "relative font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-amber focus-visible:outline-offset-2",
                   navScrolled
                     ? "text-ink hover:text-amber"
-                    : "text-canvas hover:text-canvas/70",
+                    : "text-canvas hover:text-canvas/70 drop-shadow-md",
                   pathname === link.href &&
                     "text-amber after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-amber"
                 )}
@@ -74,8 +76,10 @@ export function Navbar() {
 
           <button
             className={cn(
-              "flex h-10 w-10 items-center justify-center transition-colors lg:hidden",
-              navScrolled ? "text-ink hover:text-amber" : "text-canvas"
+              "flex h-10 w-10 items-center justify-center transition-all duration-300 lg:hidden",
+              navScrolled
+                ? "text-ink hover:text-amber"
+                : "rounded-full bg-ink/20 text-canvas backdrop-blur-md hover:bg-ink/30 hover:text-amber"
             )}
             onClick={() => setMobileOpen(true)}
             aria-label="Open navigation menu"
