@@ -41,20 +41,20 @@ export function Navbar() {
   return (
     <>
       <motion.header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-          navScrolled
-            ? "bg-canvas/95 backdrop-blur-md border-b border-border"
-            : "bg-transparent"
-        )}
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+        navScrolled
+          ? "bg-canvas/95 backdrop-blur-md border-b border-border"
+          : "bg-transparent border-b border-transparent"
+      )}
         initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <div className="container-site flex h-16 items-center justify-between md:h-20">
-          <div className={cn("transition-all duration-300", !navScrolled && "drop-shadow-md")}>
-            <Wordmark inverted={!navScrolled} />
-          </div>
+          <div className="transition-all duration-300">
+          <Wordmark inverted={false} />
+        </div>
 
           <nav
             className="hidden items-center gap-8 lg:flex"
@@ -64,14 +64,12 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn(
-                  "relative font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-amber focus-visible:outline-offset-2",
-                  navScrolled
-                    ? "text-ink hover:text-amber"
-                    : "text-canvas hover:text-canvas/70 drop-shadow-md",
-                  pathname === link.href &&
-                    "text-amber after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-amber"
-                )}
+               className={cn(
+                "relative font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-amber focus-visible:outline-offset-2",
+                "text-ink hover:text-amber",
+                pathname === link.href &&
+                  "text-amber after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-amber"
+              )}
               >
                 {link.label}
               </Link>
