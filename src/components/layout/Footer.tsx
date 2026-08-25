@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { ArrowUpRight } from "lucide-react";
+import { contactInfo } from "@/data/contact";
 
 const navLinks = [
   { href: "/projects", label: "Projects" },
@@ -53,19 +54,19 @@ export function Footer() {
             </p>
             <address className="mt-4 flex flex-col gap-3 not-italic">
               <a
-                href="mailto:hello@squarefeetdesignspace.com"
+                href={`mailto:${contactInfo.email}`}
                 className="font-sans text-sm text-canvas/70 transition-colors hover:text-amber focus-visible:outline-amber"
               >
-                hello@squarefeetdesignspace.com
+                {contactInfo.email}
               </a>
               <a
-                href="tel:+910000000000"
+                href={`tel:${contactInfo.phone.replace(/[^0-9+]/g, '')}`}
                 className="font-sans text-sm text-canvas/70 transition-colors hover:text-amber focus-visible:outline-amber"
               >
-                +91 00 0000 0000
+                {contactInfo.phone}
               </a>
               <p className="font-sans text-sm text-canvas/40">
-                [City, State, India]
+                {contactInfo.address}
               </p>
             </address>
           </div>

@@ -1,15 +1,31 @@
 import type { Metadata } from "next";
+import { projects } from "@/data/projects";
+import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
+import { Reveal } from "@/components/ui/Reveal";
+import { ProjectCTA } from "@/components/projects/ProjectCTA";
 
 export const metadata: Metadata = {
-  title: "Projects",
-  description: "Architecture and construction projects by SquareFeet Design Space.",
+  title: "Selected Work | SquareFeet Design Space",
+  description: "Explore our portfolio of residential, commercial, and mixed-use architecture projects.",
 };
 
 export default function ProjectsPage() {
   return (
-    <div className="pt-32 section-py container-site">
-      <p className="font-sans text-2xs tracking-[0.2em] uppercase text-stone">Coming in Phase 3</p>
-      <h1 className="font-display mt-4 text-5xl text-ink">Projects</h1>
-    </div>
+    <main className="pt-nav">
+      <div className="container-site pt-16 md:pt-24">
+        <header className="mb-16 md:mb-24">
+          <Reveal>
+            <h1 className="font-display text-5xl leading-tight text-ink sm:text-6xl md:text-7xl lg:text-8xl">
+              Selected <br /> Work
+            </h1>
+          </Reveal>
+        </header>
+
+        <Reveal delay={0.1}>
+          <ProjectsGrid projects={projects} />
+        </Reveal>
+      </div>
+      <ProjectCTA />
+    </main>
   );
 }
