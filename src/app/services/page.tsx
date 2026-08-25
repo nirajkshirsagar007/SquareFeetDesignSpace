@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
+import { ServicesHero } from "@/components/services/ServicesHero";
+import { ServicesIntro } from "@/components/services/ServicesIntro";
+import { ServiceList } from "@/components/services/ServiceList";
+import { ServiceDetail } from "@/components/services/ServiceDetail";
+import { Process } from "@/components/home/Process";
+import { ServicesProjects } from "@/components/services/ServicesProjects";
+import { CTA } from "@/components/home/CTA";
 
 export const metadata: Metadata = {
-  title: "Services",
-  description: "Architecture, construction, interior design, and engineering services.",
+  title: "Services | SquareFeet Design Space",
+  description:
+    "Architecture, interior design, construction, engineering, project management, and renovation services delivered as a single integrated practice.",
 };
 
 export default function ServicesPage() {
   return (
-    <div className="pt-nav section-py container-site">
-      <p className="font-sans text-2xs tracking-[0.2em] uppercase text-stone">Coming in Phase 4</p>
-      <h1 className="font-display mt-4 text-5xl text-ink">Services</h1>
-    </div>
+    <>
+      <ServicesHero />
+      <ServicesIntro />
+      <ServiceList />
+      <ServiceDetail />
+      <Process label="How We Work" />
+      <ServicesProjects />
+      <CTA />
+    </>
   );
 }

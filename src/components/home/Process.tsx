@@ -2,7 +2,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { processSteps } from "@/data/process";
 
-export function Process() {
+export function Process({ label = "05 — Our Process" }: { label?: string }) {
   return (
     <section
       className="section-py border-t border-border"
@@ -12,7 +12,7 @@ export function Process() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-3 lg:col-span-2">
             <Reveal>
-              <SectionLabel as="p">05 — Our Process</SectionLabel>
+              <SectionLabel as="p">{label}</SectionLabel>
             </Reveal>
             <Reveal delay={0.1}>
               <h2
