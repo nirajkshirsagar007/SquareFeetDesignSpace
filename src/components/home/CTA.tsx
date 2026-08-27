@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { contactInfo } from "@/data/contact";
 
 export function CTA() {
   return (
@@ -54,16 +55,16 @@ export function CTA() {
             <Reveal delay={0.25}>
               <address className="not-italic lg:text-right">
                 <a
-                  href="mailto:hello@squarefeetdesignspace.com"
+                  href={`mailto:${contactInfo.email}`}
                   className="block font-sans text-sm text-canvas/50 transition-colors hover:text-canvas focus-visible:outline-amber"
                 >
-                  hello@squarefeetdesignspace.com
+                  {contactInfo.email}
                 </a>
                 <a
-                  href="tel:+910000000000"
+                  href={`tel:${contactInfo.phone.replace(/[^0-9+]/g, "")}`}
                   className="mt-1 block font-sans text-sm text-canvas/50 transition-colors hover:text-canvas focus-visible:outline-amber"
                 >
-                  +91 00 0000 0000
+                  {contactInfo.phone}
                 </a>
               </address>
             </Reveal>

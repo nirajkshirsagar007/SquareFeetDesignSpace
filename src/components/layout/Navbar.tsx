@@ -53,7 +53,7 @@ export function Navbar() {
       >
         <div className="container-site flex h-16 items-center justify-between md:h-20">
           <div className="transition-all duration-300">
-          <Wordmark inverted={false} />
+          <Wordmark inverted={!navScrolled && isHome} />
         </div>
 
           <nav
@@ -66,7 +66,7 @@ export function Navbar() {
                 href={link.href}
                className={cn(
                 "relative font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-amber focus-visible:outline-offset-2",
-                "text-ink hover:text-amber",
+                !navScrolled && isHome ? "text-canvas hover:text-amber" : "text-ink hover:text-amber",
                 pathname === link.href &&
                   "text-amber after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-amber"
               )}
@@ -77,7 +77,10 @@ export function Navbar() {
           </nav>
 
           <button
-            className="flex h-10 w-10 items-center justify-center transition-all duration-300 text-ink hover:text-amber lg:hidden"
+            className={cn(
+              "flex h-10 w-10 items-center justify-center transition-all duration-300 lg:hidden",
+              !navScrolled && isHome ? "text-canvas hover:text-amber" : "text-ink hover:text-amber"
+            )}
             onClick={() => setMobileOpen(true)}
             aria-label="Open navigation menu"
             aria-expanded={mobileOpen}

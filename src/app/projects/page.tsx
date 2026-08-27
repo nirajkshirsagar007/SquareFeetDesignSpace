@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <main className="pt-nav">
+    <div className="pt-nav">
       <div className="container-site pt-16 md:pt-24">
         <header className="mb-16 md:mb-24">
           <Reveal>
@@ -26,6 +26,6 @@ export default function ProjectsPage() {
         </Reveal>
       </div>
       <ProjectCTA />
-    </main>
+    </div>
   );
 }

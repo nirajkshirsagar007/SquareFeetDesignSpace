@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { useEffect } from "react";
 import { Wordmark } from "@/components/ui/Wordmark";
+import { contactInfo } from "@/data/contact";
 
 const navLinks = [
   { href: "/projects", label: "Projects" },
@@ -78,6 +79,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
           <motion.nav
             key="menu"
+            id="mobile-menu"
             className="fixed inset-y-0 right-0 z-[100] flex w-full max-w-sm flex-col bg-canvas px-8 py-10 lg:hidden"
             variants={menuVariants}
             initial="hidden"
@@ -124,10 +126,10 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 Contact
               </p>
               <a
-                href="mailto:hello@squarefeetdesignspace.com"
+                href={`mailto:${contactInfo.email}`}
                 className="mt-2 block font-sans text-sm text-ink transition-colors hover:text-amber focus-visible:outline-amber"
               >
-                hello@squarefeetdesignspace.com
+                {contactInfo.email}
               </a>
             </div>
           </motion.nav>
