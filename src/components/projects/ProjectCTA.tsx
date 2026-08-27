@@ -4,7 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export function ProjectCTA() {
   return (
-    <section className="section-py bg-ink text-canvas mt-20">
+    <section className="section-py bg-ink text-canvas">
       <div className="container-site">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:items-end">
           <div>
