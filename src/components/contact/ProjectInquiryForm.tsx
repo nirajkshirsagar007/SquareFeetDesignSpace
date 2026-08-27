@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { ProjectCategory } from "@/types";
 
 const projectTypes: ProjectCategory[] = [
@@ -14,7 +16,7 @@ const projectTypes: ProjectCategory[] = [
 ];
 
 export function ProjectInquiryForm() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     name: "",
@@ -23,7 +25,9 @@ export function ProjectInquiryForm() {
     message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
@@ -44,7 +48,6 @@ export function ProjectInquiryForm() {
       next.email = "Please enter a valid email address.";
     }
     if (!formData.projectType) next.projectType = "Please select a project type.";
-    if (!formData.message.trim()) next.message = "Message is required.";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -53,161 +56,237 @@ export function ProjectInquiryForm() {
     e.preventDefault();
     if (!validate()) return;
     setStatus("submitting");
-    await new Promise((r) => setTimeout(r, 1500));
-    setStatus("success");
+
+    try {
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+      if (!accessKey) {
+        throw new Error("Web3Forms access key is not configured.");
+      }
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          ...formData,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus("success");
+      } else {
+        console.error("Web3Forms Error:", result);
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error("Submission Error:", err);
+      setStatus("error");
+    }
   };
 
+  // Elegant filled inputs with rounded corners for better visibility
   const inputClass =
-    "w-full rounded-none border border-canvas/20 bg-canvas/10 px-4 py-3 font-sans text-base text-canvas placeholder:text-canvas/40 transition-colors focus:border-amber focus:bg-canvas/15 focus:outline-none disabled:opacity-50";
+    "w-full rounded-xl border border-canvas/20 bg-canvas/5 px-5 py-4 font-sans text-base text-canvas placeholder:text-canvas/40 transition-all focus:border-amber focus:outline-none focus:ring-1 focus:ring-amber disabled:opacity-50";
 
-  const labelClass = "font-sans text-2xs tracking-[0.12em] uppercase text-canvas/60";
+  const labelClass = "font-sans text-sm text-canvas/60";
 
   return (
-    <section className="section-py border-t border-canvas/10 bg-ink" aria-labelledby="inquiry-heading">
+    <section
+      className="section-py border-t border-canvas/10 bg-ink text-canvas"
+      aria-labelledby="inquiry-heading"
+    >
       <div className="container-site">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
-          <div className="md:col-span-3 lg:col-span-2">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-8">
+          
+          {/* Left Column: Editorial Heading */}
+          <div className="lg:col-span-5">
             <Reveal>
-              <SectionLabel as="p" className="text-canvas/40">Inquiry</SectionLabel>
+              <SectionLabel as="p" className="text-canvas/60">Contact</SectionLabel>
             </Reveal>
-          </div>
-
-          <div className="md:col-span-9 lg:col-span-7 lg:col-start-4">
             <Reveal delay={0.1}>
               <h2
                 id="inquiry-heading"
-                className="font-display text-3xl leading-tight text-canvas sm:text-4xl lg:text-5xl"
+                className="mt-4 font-display text-4xl leading-tight text-canvas sm:text-5xl lg:text-6xl"
               >
-                Tell us about your project.
+                Let&rsquo;s build
+                <br /> something
+                <br /> together.
               </h2>
             </Reveal>
             <Reveal delay={0.15}>
-              <p className="mt-4 max-w-lg font-sans text-sm leading-relaxed text-canvas/50">
-                Share what you have in mind and we will get back to you within two working days.
+              <p className="mt-6 max-w-sm font-sans text-sm leading-relaxed text-canvas/60">
+                Tell us about your next project and we will get back to you within two working days.
               </p>
             </Reveal>
+          </div>
 
+          {/* Right Column: Form or Success State */}
+          <div className="lg:col-span-6 lg:col-start-7 p-8 md:p-10 lg:p-12">
             {status === "success" ? (
               <Reveal delay={0.1}>
-                <div className="mt-12 border border-canvas/20 p-8 md:p-12" role="status">
-                  <h3 className="font-display text-2xl text-canvas">Thank you for your interest.</h3>
-                  <p className="mt-4 font-sans text-sm leading-relaxed text-canvas/60">
-                    We have received your project inquiry. A member of our studio will review your details and be in touch shortly.
+                <div className="flex flex-col justify-center lg:min-h-[400px]" role="status">
+                  <h3 className="font-display text-3xl text-canvas sm:text-4xl">Thank you.</h3>
+                  <p className="mt-6 max-w-md font-sans text-base leading-relaxed text-canvas/80">
+                    Your project brief has been received. We&rsquo;ll be in touch shortly to discuss the next steps.
                   </p>
-                  <div className="mt-8 border-t border-canvas/10 pt-6">
-                    <p className="font-sans text-xs text-canvas/30">
-                      Note: This is a frontend simulation. No actual email was sent during this phase.
-                    </p>
+                  <div className="mt-12">
+                    <button
+                      onClick={() => {
+                        setStatus("idle");
+                        setFormData({ name: "", email: "", projectType: "", message: "" });
+                      }}
+                      className="group inline-flex items-center gap-3 font-sans text-xs tracking-[0.15em] uppercase text-canvas transition-colors hover:text-amber focus-visible:outline-amber"
+                    >
+                      Back to Contact
+                      <ArrowUpRight
+                        size={14}
+                        strokeWidth={1.5}
+                        className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      />
+                    </button>
                   </div>
                 </div>
               </Reveal>
             ) : (
               <Reveal delay={0.2}>
-                <form onSubmit={handleSubmit} className="mt-12 flex flex-col gap-7" noValidate>
-                  <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="name" className={labelClass}>Full Name *</label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        aria-invalid={!!errors.name}
-                        aria-describedby={errors.name ? "name-error" : undefined}
-                        className={inputClass}
-                        placeholder="Jane Doe"
-                        disabled={status === "submitting"}
-                      />
-                      {errors.name && (
-                        <span id="name-error" role="alert" className="font-sans text-xs text-amber/80">
-                          {errors.name}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="email" className={labelClass}>Email Address *</label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        aria-invalid={!!errors.email}
-                        aria-describedby={errors.email ? "email-error" : undefined}
-                        className={inputClass}
-                        placeholder="jane@example.com"
-                        disabled={status === "submitting"}
-                      />
-                      {errors.email && (
-                        <span id="email-error" role="alert" className="font-sans text-xs text-amber/80">
-                          {errors.email}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="projectType" className={labelClass}>Project Type *</label>
-                    <select
-                      id="projectType"
-                      name="projectType"
-                      value={formData.projectType}
+                <form onSubmit={handleSubmit} className="flex flex-col gap-8" noValidate>
+                  
+                  {/* 01 - NAME */}
+                  <div className="relative flex flex-col gap-2">
+                    <label htmlFor="name" className={labelClass}>Your Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
                       onChange={handleChange}
-                      aria-invalid={!!errors.projectType}
-                      aria-describedby={errors.projectType ? "projectType-error" : undefined}
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "name-error" : undefined}
                       className={inputClass}
                       disabled={status === "submitting"}
-                    >
-                      <option value="" disabled className="bg-ink text-canvas/60">Select a category</option>
-                      {projectTypes.map((type) => (
-                        <option key={type} value={type} className="bg-ink text-canvas">
-                          {type}
-                        </option>
-                      ))}
-                    </select>
+                    />
+                    {errors.name && (
+                      <span id="name-error" role="alert" className="absolute -bottom-6 font-sans text-xs text-amber">
+                        {errors.name}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* 02 - EMAIL */}
+                  <div className="relative flex flex-col gap-2">
+                    <label htmlFor="email" className={labelClass}>Your Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "email-error" : undefined}
+                      className={inputClass}
+                      disabled={status === "submitting"}
+                    />
+                    {errors.email && (
+                      <span id="email-error" role="alert" className="absolute -bottom-6 font-sans text-xs text-amber">
+                        {errors.email}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* 03 - PROJECT TYPE */}
+                  <div className="relative flex flex-col gap-2">
+                    <fieldset>
+                      <legend className={labelClass}>Project Type</legend>
+                      <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                        {projectTypes.map((type) => (
+                          <label
+                            key={type}
+                            className={cn(
+                              "flex cursor-pointer items-center justify-center rounded-xl border px-4 py-4 text-center font-sans text-xs tracking-[0.1em] uppercase transition-all focus-within:ring-2 focus-within:ring-amber focus-within:ring-offset-2 focus-within:ring-offset-ink",
+                              formData.projectType === type 
+                                ? "border-amber bg-amber/10 font-semibold text-amber" 
+                                : "border-canvas/20 bg-canvas/5 text-canvas/60 hover:border-canvas/40 hover:bg-canvas/10 hover:text-canvas"
+                            )}
+                          >
+                            <input
+                              type="radio"
+                              name="projectType"
+                              value={type}
+                              checked={formData.projectType === type}
+                              onChange={handleChange}
+                              className="sr-only"
+                              disabled={status === "submitting"}
+                              aria-describedby={errors.projectType ? "projectType-error" : undefined}
+                            />
+                            {type}
+                          </label>
+                        ))}
+                      </div>
+                    </fieldset>
                     {errors.projectType && (
-                      <span id="projectType-error" role="alert" className="font-sans text-xs text-amber/80">
+                      <span id="projectType-error" role="alert" className="absolute -bottom-6 font-sans text-xs text-amber">
                         {errors.projectType}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="message" className={labelClass}>Project Details *</label>
+                  {/* 04 - MESSAGE */}
+                  <div className="relative flex flex-col gap-2">
+                    <label htmlFor="message" className={labelClass}>Message <span className="text-stone/50 tracking-normal">(optional)</span></label>
                     <textarea
                       id="message"
                       name="message"
-                      rows={5}
+                      rows={4}
                       value={formData.message}
                       onChange={handleChange}
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? "message-error" : undefined}
-                      className={`${inputClass} resize-y`}
-                      placeholder="Tell us about your vision, timeline, and any specific requirements..."
+                      className={cn(inputClass, "resize-y")}
                       disabled={status === "submitting"}
                     />
                     {errors.message && (
-                      <span id="message-error" role="alert" className="font-sans text-xs text-amber/80">
+                      <span id="message-error" role="alert" className="absolute -bottom-6 font-sans text-xs text-amber">
                         {errors.message}
                       </span>
                     )}
                   </div>
 
+                  {/* ERROR BANNER */}
+                  {status === "error" && (
+                    <div className="border border-amber/30 bg-amber/5 p-4" role="alert">
+                      <p className="font-sans text-sm text-canvas">
+                        Something went wrong while sending your inquiry. Please try again.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* SUBMIT */}
                   <div className="pt-2">
                     <button
                       type="submit"
                       disabled={status === "submitting"}
-                      className="inline-flex min-h-[52px] items-center justify-center gap-3 border border-canvas/30 bg-canvas px-10 py-4 font-sans text-2xs tracking-[0.18em] uppercase text-ink transition-all duration-300 hover:border-canvas hover:bg-amber hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:pointer-events-none disabled:opacity-50"
+                      className="group flex w-full min-h-[56px] items-center justify-center gap-3 rounded-xl border border-amber bg-amber px-10 font-sans text-xs tracking-[0.15em] uppercase text-ink transition-all duration-300 hover:border-ink hover:bg-ink hover:text-canvas focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:pointer-events-none disabled:opacity-50"
                     >
-                      {status === "submitting" ? "Sending..." : "Submit Inquiry"}
+                      {status === "submitting" ? "Sending..." : "Send Message"}
+                      <ArrowUpRight
+                        size={16}
+                        strokeWidth={1.5}
+                        className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
                     </button>
                   </div>
+
                 </form>
               </Reveal>
             )}
           </div>
+
         </div>
       </div>
     </section>
