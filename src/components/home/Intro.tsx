@@ -31,7 +31,7 @@ export function Intro() {
             <Reveal delay={0.2}>
               <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12">
                 <p className="font-sans text-sm leading-relaxed text-stone">
-                  SquareFeet Design Space brings architecture, engineering and
+                  Square Feet Architect brings architecture, engineering and
                   construction together under one disciplined practice — creating
                   spaces that are spatially considered, technically precise and
                   built to endure.

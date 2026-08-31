@@ -4,7 +4,7 @@ export const testimonials: Testimonial[] = [
   {
     id: "1",
     quote:
-      "Working with SquareFeet transformed our vision into a space that feels both timeless and deeply personal. Every detail was considered, every material chosen with intention.",
+      "Working with Square Feet Architect transformed our vision into a space that feels both timeless and deeply personal. Every detail was considered, every material chosen with intention.",
     author: "[Client Name]",
     role: "Homeowner",
     project: "The Courtyard House, Pune",

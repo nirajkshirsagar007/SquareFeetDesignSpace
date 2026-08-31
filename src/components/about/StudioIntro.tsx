@@ -17,7 +17,7 @@ export function StudioIntro() {
             <Reveal delay={0.1}>
               <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2">
                 <p className="font-sans text-sm leading-relaxed text-stone">
-                  SquareFeet Design Space was founded on a simple premise: great design requires faultless execution. We recognized that the traditional disconnect between architects, engineers, and builders often compromises the final outcome, resulting in diluted concepts and avoidable friction.
+                  Square Feet Architect was founded on a simple premise: great design requires faultless execution. We recognized that the traditional disconnect between architects, engineers, and builders often compromises the final outcome, resulting in diluted concepts and avoidable friction.
                 </p>
                 <p className="font-sans text-sm leading-relaxed text-stone">
                   By bringing these disciplines under one roof, we restore control over the entire lifecycle of a project. Our approach ensures that every material choice, structural detail, and spatial sequence is considered early and executed precisely.

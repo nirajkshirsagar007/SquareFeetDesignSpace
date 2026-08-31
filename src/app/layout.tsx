@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
@@ -19,29 +19,29 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL("https://squarefeetdesignspace.com"),
   title: {
-    default: "SquareFeet Design Space — Architecture & Construction",
-    template: "%s | SquareFeet Design Space",
+    default: "Square Feet Architect — Architecture & Construction",
+    template: "%s | Square Feet Architect",
   },
   description:
-    "SquareFeet Design Space is an architecture and construction company delivering precision-built spaces across India.",
+    "Square Feet Architect is an architecture and construction company delivering precision-built spaces across India.",
   keywords: [
     "architecture",
     "construction",
     "interior design",
     "India",
-    "SquareFeet Design Space",
+    "Square Feet Architect",
   ],
   openGraph: {
     type: "website",
     locale: "en_IN",
-    siteName: "SquareFeet Design Space",
-    title: "SquareFeet Design Space — Architecture & Construction",
+    siteName: "Square Feet Architect",
+    title: "Square Feet Architect — Architecture & Construction",
     description:
       "Architecture, engineering, and construction delivered with precision.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SquareFeet Design Space",
+    title: "Square Feet Architect",
     description:
       "Architecture, engineering, and construction delivered with precision.",
   },

@@ -1,7 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { ArrowUpRight } from "lucide-react";
 import { contactInfo } from "@/data/contact";
+import { brand } from "@/data/site";
 
 const navLinks = [
   { href: "/projects", label: "Projects" },
@@ -18,7 +19,7 @@ export function Footer() {
       <div className="container-site py-16 md:py-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 lg:grid-cols-4">
           <div className="md:col-span-1 lg:col-span-2">
-            <Wordmark inverted />
+            <Wordmark />
             <p className="mt-6 max-w-xs font-sans text-sm leading-relaxed text-canvas/60">
               Architecture, engineering, and construction delivered with
               precision. Built to last.
@@ -60,7 +61,7 @@ export function Footer() {
                 {contactInfo.email}
               </a>
               <a
-                href={`tel:${contactInfo.phone.replace(/[^0-9+]/g, '')}`}
+                href={`tel:${contactInfo.phone.replace(/[^0-9+]/g, "")}`}
                 className="font-sans text-sm text-canvas/70 transition-colors hover:text-amber focus-visible:outline-amber"
               >
                 {contactInfo.phone}
@@ -74,10 +75,10 @@ export function Footer() {
 
         <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-canvas/10 pt-8 md:flex-row md:items-center">
           <p className="font-sans text-xs text-canvas/30">
-            © {year} SquareFeet Design Space. All rights reserved.
+            &copy; {year} {brand.name}. All rights reserved.
           </p>
-          <p className="font-sans text-xs text-canvas/20">
-            Architecture & Construction
+          <p className="font-sans text-xs text-canvas/20 italic">
+            {brand.tagline}
           </p>
         </div>
       </div>
