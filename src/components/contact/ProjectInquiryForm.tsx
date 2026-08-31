@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { Reveal } from "@/components/ui/Reveal";
@@ -58,6 +58,11 @@ export function ProjectInquiryForm() {
     setStatus("submitting");
 
     try {
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+      if (!accessKey) {
+        throw new Error("Web3Forms access key is not configured.");
+      }
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -65,7 +70,7 @@ export function ProjectInquiryForm() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: "74f7f50e-0299-42c7-bf1f-33cde51f4685",
+          access_key: accessKey,
           ...formData,
         }),
       });
