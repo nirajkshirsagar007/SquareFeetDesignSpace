@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCTA } from "@/components/projects/ProjectCTA";
 
 export const metadata: Metadata = {
-  title: "Selected Work | SquareFeet Design Space",
+  title: "Selected Work | Square Feet Architect",
   description: "Explore our portfolio of residential, commercial, and mixed-use architecture projects.",
 };
 

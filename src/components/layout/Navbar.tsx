@@ -53,7 +53,7 @@ export function Navbar() {
       >
         <div className="container-site flex h-16 items-center justify-between md:h-20">
           <div className="transition-all duration-300">
-          <Wordmark inverted={!navScrolled && isHome} />
+          <Wordmark />
         </div>
 
           <nav

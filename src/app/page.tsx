@@ -12,7 +12,7 @@ import { Clients } from "@/components/home/Clients";
 import { CTA } from "@/components/home/CTA";
 
 export const metadata: Metadata = {
-  title: "SquareFeet Design Space — Architecture & Construction",
+  title: "Square Feet Architect — Architecture & Construction",
   description:
     "We design and build spaces where architecture, engineering and human experience meet. Architecture, construction and interior design across India.",
 };

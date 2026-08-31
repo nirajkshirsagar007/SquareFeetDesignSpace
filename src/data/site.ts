@@ -28,3 +28,9 @@ export const siteImages = {
     alt: "Modern architecture studio building exterior",
   },
 };
+
+export const brand = {
+  name: "Square Feet Architect",
+  shortName: "SFA",
+  tagline: "Designing Spaces, Elevating Lives",
+};
