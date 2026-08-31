@@ -1,5 +1,5 @@
 export const contactInfo = {
-  email: "[Studio Email]",
+  email: "square.feet.architect.sfa@gmail.com",
   phone: "[Studio Phone]",
   address: "[Studio Address]",
   hours: "[Working Hours]",
