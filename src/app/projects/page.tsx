@@ -5,13 +5,13 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCTA } from "@/components/projects/ProjectCTA";
 
 export const metadata: Metadata = {
-  title: "Selected Work | SquareFeet Design Space",
+  title: "Selected Work | Square Feet Architect",
   description: "Explore our portfolio of residential, commercial, and mixed-use architecture projects.",
 };
 
 export default function ProjectsPage() {
   return (
-    <main className="pt-nav">
+    <div className="pt-nav">
       <div className="container-site pt-16 md:pt-24">
         <header className="mb-16 md:mb-24">
           <Reveal>
@@ -26,6 +26,6 @@ export default function ProjectsPage() {
         </Reveal>
       </div>
       <ProjectCTA />
-    </main>
+    </div>
   );
 }

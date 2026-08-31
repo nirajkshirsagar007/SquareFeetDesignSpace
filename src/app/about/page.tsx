@@ -9,8 +9,8 @@ import { AboutProjects } from "@/components/about/AboutProjects";
 import { CTA } from "@/components/home/CTA";
 
 export const metadata: Metadata = {
-  title: "About | SquareFeet Design Space",
-  description: "About SquareFeet Design Space — our philosophy, team, and integrated approach to architecture and construction.",
+  title: "About | Square Feet Architect",
+  description: "About Square Feet Architect — our philosophy, team, and integrated approach to architecture and construction.",
 };
 
 export default function AboutPage() {

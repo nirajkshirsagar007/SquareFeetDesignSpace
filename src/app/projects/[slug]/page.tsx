@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
   return {
-    title: `${project.title} | SquareFeet Design Space`,
+    title: `${project.title} | Square Feet Architect`,
     description: project.shortDescription,
   };
 }
@@ -43,9 +43,9 @@ export default async function ProjectDetailPage({ params }: Props) {
   }
 
   return (
-    <main className="bg-canvas">
+    <div className="bg-canvas">
       {/* 1. Hero */}
-      <section className="relative min-h-[70vh] md:min-h-[85vh] w-full pt-20">
+      <section className="relative min-h-[70vh] md:min-h-[85vh] w-full pt-nav">
         <Image
           src={project.coverImage}
           alt={project.title}
@@ -226,6 +226,6 @@ export default async function ProjectDetailPage({ params }: Props) {
       )}
 
       <ProjectCTA />
-    </main>
+    </div>
   );
 }

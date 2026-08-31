@@ -30,6 +30,7 @@ export function CaseStudy() {
             src={project.coverImage}
             alt={`${project.title} — ${project.category} in ${project.city}`}
             fill
+            priority
             sizes="100vw"
             className="object-cover"
           />

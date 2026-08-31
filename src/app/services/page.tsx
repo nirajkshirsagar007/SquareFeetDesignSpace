@@ -8,7 +8,7 @@ import { ServicesProjects } from "@/components/services/ServicesProjects";
 import { CTA } from "@/components/home/CTA";
 
 export const metadata: Metadata = {
-  title: "Services | SquareFeet Design Space",
+  title: "Services | Square Feet Architect",
   description:
     "Architecture, interior design, construction, engineering, project management, and renovation services delivered as a single integrated practice.",
 };
