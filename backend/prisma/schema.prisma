@@ -1,0 +1,211 @@
+// Prisma Schema — Square Feet Design Space Backend
+// Docs: https://www.prisma.io/docs/concepts/components/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────
+
+enum ProjectCategory {
+  Residential
+  Commercial
+  Hospitality
+  Institutional
+  MixedUse
+}
+
+enum ProjectStatus {
+  Completed
+  Ongoing
+  Upcoming
+}
+
+enum InquiryStatus {
+  New
+  Read
+  Replied
+}
+
+// ─────────────────────────────────────────────────────────
+// ADMIN USER
+// ─────────────────────────────────────────────────────────
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admins")
+}
+
+// ─────────────────────────────────────────────────────────
+// PROJECTS
+// ─────────────────────────────────────────────────────────
+
+model Project {
+  id               String          @id @default(cuid())
+  slug             String          @unique
+  title            String
+  location         String
+  city             String
+  category         ProjectCategory
+  year             Int
+  status           ProjectStatus
+  area             String
+  shortDescription String
+  description      String          @db.Text
+  concept          String          @db.Text
+  coverImage       String
+  featured         Boolean         @default(false)
+  published        Boolean         @default(true)
+  sortOrder        Int             @default(0)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  // Relations
+  materials ProjectMaterial[]
+  gallery   ProjectGallery[]
+  timeline  ProjectTimeline[]
+
+  @@map("projects")
+}
+
+model ProjectMaterial {
+  id        String  @id @default(cuid())
+  projectId String
+  material  String
+  order     Int     @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_materials")
+}
+
+model ProjectGallery {
+  id        String @id @default(cuid())
+  projectId String
+  imageUrl  String
+  alt       String @default("")
+  order     Int    @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_gallery")
+}
+
+model ProjectTimeline {
+  id        String @id @default(cuid())
+  projectId String
+  phase     String
+  date      String
+  order     Int    @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_timeline")
+}
+
+// ─────────────────────────────────────────────────────────
+// SERVICES
+// ─────────────────────────────────────────────────────────
+
+model Service {
+  id          String @id @default(cuid())
+  slug        String @unique
+  title       String
+  description String @db.Text
+  image       String
+  sortOrder   Int    @default(0)
+
+  deliverables ServiceDeliverable[]
+
+  @@map("services")
+}
+
+model ServiceDeliverable {
+  id        String @id @default(cuid())
+  serviceId String
+  item      String
+  order     Int    @default(0)
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@map("service_deliverables")
+}
+
+// ─────────────────────────────────────────────────────────
+// TEAM MEMBERS
+// ─────────────────────────────────────────────────────────
+
+model TeamMember {
+  id        String @id @default(cuid())
+  name      String
+  role      String
+  bio       String @db.Text
+  image     String
+  sortOrder Int    @default(0)
+
+  @@map("team_members")
+}
+
+// ─────────────────────────────────────────────────────────
+// TESTIMONIALS
+// ─────────────────────────────────────────────────────────
+
+model Testimonial {
+  id        String @id @default(cuid())
+  quote     String @db.Text
+  author    String
+  role      String
+  project   String
+  published Boolean @default(true)
+  sortOrder Int     @default(0)
+
+  @@map("testimonials")
+}
+
+// ─────────────────────────────────────────────────────────
+// STATS
+// ─────────────────────────────────────────────────────────
+
+model Stat {
+  id          String @id @default(cuid())
+  value       String
+  suffix      String
+  label       String
+  description String
+  sortOrder   Int    @default(0)
+
+  @@map("stats")
+}
+
+// ─────────────────────────────────────────────────────────
+// CONTACT FORM INQUIRIES
+// ─────────────────────────────────────────────────────────
+
+model Inquiry {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  projectType String?
+  budget      String?
+  message     String        @db.Text
+  status      InquiryStatus @default(New)
+  submittedAt DateTime      @default(now())
+  readAt      DateTime?
+  repliedAt   DateTime?
+
+  @@map("inquiries")
+}
