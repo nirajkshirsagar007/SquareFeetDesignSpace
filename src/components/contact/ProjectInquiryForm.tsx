@@ -58,9 +58,36 @@ export function ProjectInquiryForm() {
     setStatus("submitting");
 
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      let backendSuccess = false;
+
+      // 1. Try sending to our custom backend API first
+      try {
+        const response = await fetch(`${apiUrl}/api/inquiries`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          if (resData.success) {
+            backendSuccess = true;
+            setStatus("success");
+          }
+        }
+      } catch (backendErr) {
+        console.warn("Backend API unreachable, attempting Web3Forms fallback:", backendErr);
+      }
+
+      if (backendSuccess) return;
+
+      // 2. Fallback to Web3Forms if backend is down/unavailable
       const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
       if (!accessKey) {
-        throw new Error("Web3Forms access key is not configured.");
+        throw new Error("Neither backend nor Web3Forms is available.");
       }
 
       const response = await fetch("https://api.web3forms.com/submit", {

@@ -3,10 +3,11 @@ import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { projects } from "@/data/projects";
+import { api } from "@/lib/api";
 
-export function AboutProjects() {
-  const featured = projects.filter((p) => p.featured).slice(0, 2);
+export async function AboutProjects() {
+  const featuredProjects = await api.projects.getFeatured();
+  const featured = featuredProjects.slice(0, 2);
 
   if (!featured.length) return null;
 

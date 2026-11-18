@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { projects } from "@/data/projects";
+import { api } from "@/lib/api";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -23,10 +23,11 @@ const gridLayouts = [
   },
 ];
 
-export function FeaturedProjects() {
-  const featured = projects.filter((p) => p.featured).slice(0, 3);
+export async function FeaturedProjects() {
+  const featured = await api.projects.getFeatured();
+  const top3 = featured.slice(0, 3);
 
-  if (!featured.length) return null;
+  if (!top3.length) return null;
 
   return (
     <section
@@ -65,7 +66,7 @@ export function FeaturedProjects() {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-y-14 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-0 md:mt-16">
-          {featured.map((project, i) => {
+          {top3.map((project, i) => {
             const layout = gridLayouts[i] ?? gridLayouts[0];
             return (
               <Reveal
@@ -92,7 +93,12 @@ export function FeaturedProjects() {
               className="group inline-flex items-center gap-2 border-b border-ink pb-1 font-sans text-2xs tracking-[0.18em] uppercase text-ink transition-colors hover:border-amber hover:text-amber focus-visible:outline-amber"
             >
               View All Projects
-              <ArrowRight size={13} strokeWidth={1.5} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight
+                size={13}
+                strokeWidth={1.5}
+                aria-hidden="true"
+                className="transition-transform group-hover:translate-x-0.5"
+              />
             </Link>
           </div>
         </Reveal>

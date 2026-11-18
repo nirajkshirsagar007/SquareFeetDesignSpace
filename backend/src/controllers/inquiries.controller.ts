@@ -9,7 +9,7 @@ const inquirySchema = z.object({
   phone: z.string().optional(),
   projectType: z.string().optional(),
   budget: z.string().optional(),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  message: z.string().optional().default(""),
 });
 
 // POST /api/inquiries  (public — from contact form)

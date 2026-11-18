@@ -1,9 +1,11 @@
-﻿import type { MetadataRoute } from "next";
-import { projects } from "@/data/projects";
+import type { MetadataRoute } from "next";
+import { api } from "@/lib/api";
 
 const BASE_URL = "https://squarefeetdesignspace.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const projects = await api.projects.getAll();
+
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: BASE_URL,
