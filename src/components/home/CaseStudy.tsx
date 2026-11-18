@@ -3,10 +3,11 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { projects } from "@/data/projects";
+import { api } from "@/lib/api";
 
-export function CaseStudy() {
-  const project = projects.find((p) => p.featured);
+export async function CaseStudy() {
+  const featured = await api.projects.getFeatured();
+  const project = featured[0];
   if (!project) return null;
 
   return (

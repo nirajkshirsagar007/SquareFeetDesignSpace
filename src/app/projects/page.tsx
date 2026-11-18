@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
-import { projects } from "@/data/projects";
+import { api } from "@/lib/api";
 import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCTA } from "@/components/projects/ProjectCTA";
 
 export const metadata: Metadata = {
   title: "Selected Work | Square Feet Architect",
-  description: "Explore our portfolio of residential, commercial, and mixed-use architecture projects.",
+  description:
+    "Explore our portfolio of residential, commercial, and mixed-use architecture projects.",
 };
 
-export default function ProjectsPage() {
+// Revalidate this page every 60 seconds so new projects appear without a redeploy
+export const revalidate = 60;
+
+export default async function ProjectsPage() {
+  const projects = await api.projects.getAll();
+
   return (
     <div className="pt-nav">
       <div className="container-site pt-16 md:pt-24">
