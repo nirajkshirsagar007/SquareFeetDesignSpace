@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import { asyncHandler, sendSuccess, sendError } from "../lib/response";
+import { revalidateProjectPages } from "../lib/revalidate";
 import { z } from "zod";
 
 // ── Validation Schemas ───────────────────────────────────
@@ -55,6 +56,30 @@ const projectSchema = z.object({
 
 // ── Controllers ──────────────────────────────────────────
 
+// GET /api/admin/projects  (admin — returns ALL projects regardless of published status)
+export const getAllProjectsAdmin = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { category, status, featured } = req.query;
+
+    const projects = await prisma.project.findMany({
+      where: {
+        // No published filter — admin sees drafts too
+        ...(category && { category: category as any }),
+        ...(status && { status: status as any }),
+        ...(featured === "true" && { featured: true }),
+      },
+      include: {
+        materials: { orderBy: { order: "asc" } },
+        gallery: { orderBy: { order: "asc" } },
+        timeline: { orderBy: { order: "asc" } },
+      },
+      orderBy: [{ sortOrder: "asc" }, { year: "desc" }],
+    });
+
+    sendSuccess(res, projects);
+  }
+);
+
 // GET /api/projects  (public)
 export const getAllProjects = asyncHandler(
   async (req: Request, res: Response) => {
@@ -83,7 +108,7 @@ export const getAllProjects = asyncHandler(
 export const getProjectBySlug = asyncHandler(
   async (req: Request, res: Response) => {
     const project = await prisma.project.findUnique({
-      where: { slug: req.params.slug, published: true },
+      where: { slug: req.params.slug as string, published: true },
       include: {
         materials: { orderBy: { order: "asc" } },
         gallery: { orderBy: { order: "asc" } },
@@ -143,6 +168,9 @@ export const createProject = asyncHandler(
     });
 
     sendSuccess(res, project, 201, "Project created successfully");
+
+    // Trigger Next.js ISR revalidation so the public site updates immediately
+    revalidateProjectPages(project.slug).catch(() => {});
   }
 );
 
@@ -159,12 +187,13 @@ export const updateProject = asyncHandler(
 
     // Delete existing relations and re-create (simplest update strategy)
     const project = await prisma.$transaction(async (tx) => {
-      await tx.projectMaterial.deleteMany({ where: { projectId: req.params.id } });
-      await tx.projectGallery.deleteMany({ where: { projectId: req.params.id } });
-      await tx.projectTimeline.deleteMany({ where: { projectId: req.params.id } });
+      const id = req.params.id as string;
+      await tx.projectMaterial.deleteMany({ where: { projectId: id } });
+      await tx.projectGallery.deleteMany({ where: { projectId: id } });
+      await tx.projectTimeline.deleteMany({ where: { projectId: id } });
 
       return tx.project.update({
-        where: { id: req.params.id },
+        where: { id },
         data: {
           ...projectData,
           ...(materials && {
@@ -199,13 +228,19 @@ export const updateProject = asyncHandler(
     });
 
     sendSuccess(res, project, 200, "Project updated successfully");
+
+    // Revalidate both old slug and updated slug (in case slug changed)
+    revalidateProjectPages(project.slug).catch(() => {});
   }
 );
 
 // DELETE /api/projects/:id  (admin only)
 export const deleteProject = asyncHandler(
   async (req: Request, res: Response) => {
-    await prisma.project.delete({ where: { id: req.params.id } });
+    await prisma.project.delete({ where: { id: req.params.id as string } });
     sendSuccess(res, null, 200, "Project deleted successfully");
+
+    // Revalidate all project pages after deletion
+    revalidateProjectPages().catch(() => {});
   }
 );

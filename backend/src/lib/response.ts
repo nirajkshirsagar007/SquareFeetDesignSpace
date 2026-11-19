@@ -27,9 +27,8 @@ export const sendError = (
   statusCode = 500,
   details?: unknown
 ) => {
-  res.status(statusCode).json({
-    success: false,
-    message,
-    ...(details && { details }),
-  });
+  const body: Record<string, unknown> = { success: false, message };
+  if (details !== undefined) body.details = details;
+  res.status(statusCode).json(body);
 };
+

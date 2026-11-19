@@ -52,7 +52,7 @@ export const updateInquiryStatus = asyncHandler(
     }
 
     const inquiry = await prisma.inquiry.update({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
       data: {
         status,
         ...(status === "Read" && { readAt: new Date() }),
@@ -67,7 +67,7 @@ export const updateInquiryStatus = asyncHandler(
 // DELETE /api/inquiries/:id  (admin only)
 export const deleteInquiry = asyncHandler(
   async (req: Request, res: Response) => {
-    await prisma.inquiry.delete({ where: { id: req.params.id } });
+    await prisma.inquiry.delete({ where: { id: req.params.id as string } });
     sendSuccess(res, null, 200, "Inquiry deleted");
   }
 );
