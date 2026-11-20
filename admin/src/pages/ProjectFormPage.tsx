@@ -218,19 +218,19 @@ export default function ProjectFormPage({ mode }: ProjectFormPageProps) {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       {/* Top Header */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3 min-w-0">
           <Link
             to="/projects"
-            className="p-2 rounded border border-charcoal/10 bg-white text-charcoal hover:bg-ivory transition-colors"
+            className="p-2 rounded border border-charcoal/10 bg-white text-charcoal hover:bg-ivory transition-colors flex-shrink-0"
           >
             <ArrowLeft size={18} />
           </Link>
-          <div>
-            <h1 className="font-display text-2xl font-bold text-charcoal">
+          <div className="min-w-0">
+            <h1 className="font-display text-xl sm:text-2xl font-bold text-charcoal truncate">
               {mode === "create" ? "Create New Project" : `Edit Project: ${title}`}
             </h1>
-            <p className="text-xs text-charcoal-muted">
+            <p className="text-xs text-charcoal-muted truncate">
               {mode === "create"
                 ? "Add a new architectural case study to the portfolio"
                 : "Update project information and gallery"}
@@ -238,7 +238,7 @@ export default function ProjectFormPage({ mode }: ProjectFormPageProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
           {mode === "edit" && (
             <a
               href={`${SITE_URL}/projects/${slug}`}
@@ -254,6 +254,7 @@ export default function ProjectFormPage({ mode }: ProjectFormPageProps) {
             type="submit"
             form="project-form"
             loading={isSubmitting}
+            className="flex-1 sm:flex-initial"
           >
             <Save size={16} />
             <span>{mode === "create" ? "Create Project" : "Save Changes"}</span>
@@ -550,7 +551,7 @@ export default function ProjectFormPage({ mode }: ProjectFormPageProps) {
 
           <div className="space-y-3">
             {timeline.map((t, idx) => (
-              <div key={idx} className="flex items-center gap-3">
+              <div key={idx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 p-3 sm:p-0 bg-ivory/30 sm:bg-transparent rounded sm:rounded-none border sm:border-0 border-charcoal/10">
                 <input
                   type="text"
                   placeholder="Phase (e.g. Concept Design, Construction)"
@@ -571,12 +572,12 @@ export default function ProjectFormPage({ mode }: ProjectFormPageProps) {
                     next[idx].date = e.target.value;
                     setTimeline(next);
                   }}
-                  className="w-64 px-3 py-2 bg-ivory/50 border border-charcoal/15 rounded text-sm outline-none focus:border-gold"
+                  className="w-full sm:w-64 px-3 py-2 bg-ivory/50 border border-charcoal/15 rounded text-sm outline-none focus:border-gold"
                 />
                 <button
                   type="button"
                   onClick={() => setTimeline(timeline.filter((_, i) => i !== idx))}
-                  className="p-2 text-charcoal-muted hover:text-red-500 rounded"
+                  className="self-end sm:self-auto p-2 text-charcoal-muted hover:text-red-500 rounded"
                 >
                   <Trash2 size={16} />
                 </button>

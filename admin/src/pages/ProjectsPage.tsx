@@ -7,11 +7,9 @@ import {
   Trash2,
   ExternalLink,
   Star,
-  CheckCircle,
-  XCircle,
   AlertTriangle,
 } from "lucide-react";
-import { projects as projectsApi, SITE_URL, type Project, type ProjectCategory } from "@/lib/api";
+import { projects as projectsApi, SITE_URL, type Project } from "@/lib/api";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import Modal from "@/components/ui/Modal";
@@ -85,12 +83,12 @@ export default function ProjectsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-charcoal">Projects Portfolio</h1>
-          <p className="text-sm text-charcoal-muted mt-1">
+          <p className="text-xs sm:text-sm text-charcoal-muted mt-1">
             Create, edit, organize architectural projects and sync with the public website
           </p>
         </div>
-        <Link to="/projects/new">
-          <Button>
+        <Link to="/projects/new" className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto">
             <Plus size={16} />
             <span>Create New Project</span>
           </Button>
@@ -98,7 +96,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-white p-4 rounded-lg border border-charcoal/10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-white p-3 sm:p-4 rounded-lg border border-charcoal/10 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4">
         <div className="relative w-full md:w-80">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-muted" />
           <input
@@ -110,7 +108,7 @@ export default function ProjectsPage() {
           />
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat.value}
@@ -127,14 +125,14 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      {/* Projects Table */}
+      {/* Projects Container (Responsive: Mobile Cards + Desktop Table) */}
       <div className="bg-white rounded-lg border border-charcoal/10 shadow-sm overflow-hidden">
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filteredProjects.length === 0 ? (
-          <div className="p-12 text-center">
+          <div className="p-8 sm:p-12 text-center">
             <p className="text-charcoal-muted text-sm">No projects matched your criteria.</p>
             {(searchQuery || selectedCategory !== "ALL") && (
               <button
@@ -149,101 +147,164 @@ export default function ProjectsPage() {
             )}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-charcoal">
-              <thead className="bg-ivory/60 border-b border-charcoal/10 text-xs uppercase tracking-wider text-charcoal-muted">
-                <tr>
-                  <th className="px-6 py-3 font-semibold">Project</th>
-                  <th className="px-6 py-3 font-semibold">Category</th>
-                  <th className="px-6 py-3 font-semibold">Location</th>
-                  <th className="px-6 py-3 font-semibold">Year & Area</th>
-                  <th className="px-6 py-3 font-semibold">Status</th>
-                  <th className="px-6 py-3 font-semibold text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-charcoal/5">
-                {filteredProjects.map((proj) => (
-                  <tr key={proj.id} className="hover:bg-ivory/30 transition-colors">
-                    {/* Title & Cover */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={proj.coverImage}
-                          alt={proj.title}
-                          className="w-12 h-12 rounded object-cover border border-charcoal/10"
-                        />
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold text-charcoal">{proj.title}</span>
-                            {proj.featured && (
-                              <span title="Featured Project" className="text-gold">
-                                <Star size={14} className="fill-gold" />
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-xs text-charcoal-muted">/{proj.slug}</span>
-                        </div>
+          <>
+            {/* Mobile View: Clean Card Layout (< md screens) */}
+            <div className="block md:hidden divide-y divide-charcoal/10">
+              {filteredProjects.map((proj) => (
+                <div key={proj.id} className="p-4 space-y-3">
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={proj.coverImage}
+                      alt={proj.title}
+                      className="w-16 h-16 rounded object-cover border border-charcoal/10 flex-shrink-0"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-semibold text-charcoal text-sm">{proj.title}</span>
+                        {proj.featured && (
+                          <Star size={13} className="text-gold fill-gold" />
+                        )}
                       </div>
-                    </td>
+                      <p className="text-xs text-charcoal-muted mt-0.5">{proj.city}, {proj.location}</p>
+                      <p className="text-xs text-charcoal-muted mt-0.5">{proj.year} · {proj.area}</p>
+                    </div>
+                  </div>
 
-                    {/* Category */}
-                    <td className="px-6 py-4 text-xs font-medium">
+                  <div className="flex items-center justify-between pt-1">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       <Badge variant="gray">{proj.category}</Badge>
-                    </td>
+                      <Badge variant={proj.published ? "green" : "gray"}>
+                        {proj.published ? "Published" : "Draft"}
+                      </Badge>
+                    </div>
 
-                    {/* Location */}
-                    <td className="px-6 py-4 text-xs text-charcoal-muted">
-                      {proj.city}, {proj.location}
-                    </td>
+                    <div className="flex items-center gap-1">
+                      <a
+                        href={`${SITE_URL}/projects/${proj.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="View Live"
+                        className="p-2 text-charcoal-muted hover:text-gold rounded border border-charcoal/10 bg-ivory/50"
+                      >
+                        <ExternalLink size={15} />
+                      </a>
+                      <button
+                        onClick={() => navigate(`/projects/${proj.id}/edit`)}
+                        title="Edit"
+                        className="p-2 text-charcoal-muted hover:text-charcoal rounded border border-charcoal/10 bg-ivory/50"
+                      >
+                        <Edit2 size={15} />
+                      </button>
+                      <button
+                        onClick={() => setProjectToDelete(proj)}
+                        title="Delete"
+                        className="p-2 text-charcoal-muted hover:text-red-500 rounded border border-charcoal/10 bg-ivory/50"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-                    {/* Year & Area */}
-                    <td className="px-6 py-4 text-xs text-charcoal-muted">
-                      {proj.year} · {proj.area}
-                    </td>
-
-                    {/* Published & Status */}
-                    <td className="px-6 py-4">
-                      <div className="flex flex-col gap-1">
-                        <Badge variant={proj.published ? "green" : "gray"}>
-                          {proj.published ? "Published" : "Draft"}
-                        </Badge>
-                        <span className="text-[11px] text-charcoal-muted">{proj.status}</span>
-                      </div>
-                    </td>
-
-                    {/* Actions */}
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <a
-                          href={`${SITE_URL}/projects/${proj.slug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          title="View on Live Site"
-                          className="p-1.5 text-charcoal-muted hover:text-gold rounded hover:bg-ivory transition-colors"
-                        >
-                          <ExternalLink size={16} />
-                        </a>
-                        <button
-                          onClick={() => navigate(`/projects/${proj.id}/edit`)}
-                          title="Edit Project"
-                          className="p-1.5 text-charcoal-muted hover:text-charcoal rounded hover:bg-ivory transition-colors"
-                        >
-                          <Edit2 size={16} />
-                        </button>
-                        <button
-                          onClick={() => setProjectToDelete(proj)}
-                          title="Delete Project"
-                          className="p-1.5 text-charcoal-muted hover:text-red-500 rounded hover:bg-red-50 transition-colors"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
+            {/* Desktop View: Full Data Table (>= md screens) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-sm text-charcoal">
+                <thead className="bg-ivory/60 border-b border-charcoal/10 text-xs uppercase tracking-wider text-charcoal-muted">
+                  <tr>
+                    <th className="px-6 py-3 font-semibold">Project</th>
+                    <th className="px-6 py-3 font-semibold">Category</th>
+                    <th className="px-6 py-3 font-semibold">Location</th>
+                    <th className="px-6 py-3 font-semibold">Year & Area</th>
+                    <th className="px-6 py-3 font-semibold">Status</th>
+                    <th className="px-6 py-3 font-semibold text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-charcoal/5">
+                  {filteredProjects.map((proj) => (
+                    <tr key={proj.id} className="hover:bg-ivory/30 transition-colors">
+                      {/* Title & Cover */}
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={proj.coverImage}
+                            alt={proj.title}
+                            className="w-12 h-12 rounded object-cover border border-charcoal/10"
+                          />
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-charcoal">{proj.title}</span>
+                              {proj.featured && (
+                                <span title="Featured Project" className="text-gold">
+                                  <Star size={14} className="fill-gold" />
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-xs text-charcoal-muted">/{proj.slug}</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Category */}
+                      <td className="px-6 py-4 text-xs font-medium">
+                        <Badge variant="gray">{proj.category}</Badge>
+                      </td>
+
+                      {/* Location */}
+                      <td className="px-6 py-4 text-xs text-charcoal-muted">
+                        {proj.city}, {proj.location}
+                      </td>
+
+                      {/* Year & Area */}
+                      <td className="px-6 py-4 text-xs text-charcoal-muted">
+                        {proj.year} · {proj.area}
+                      </td>
+
+                      {/* Published & Status */}
+                      <td className="px-6 py-4">
+                        <div className="flex flex-col gap-1">
+                          <Badge variant={proj.published ? "green" : "gray"}>
+                            {proj.published ? "Published" : "Draft"}
+                          </Badge>
+                          <span className="text-[11px] text-charcoal-muted">{proj.status}</span>
+                        </div>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <a
+                            href={`${SITE_URL}/projects/${proj.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="View on Live Site"
+                            className="p-1.5 text-charcoal-muted hover:text-gold rounded hover:bg-ivory transition-colors"
+                          >
+                            <ExternalLink size={16} />
+                          </a>
+                          <button
+                            onClick={() => navigate(`/projects/${proj.id}/edit`)}
+                            title="Edit Project"
+                            className="p-1.5 text-charcoal-muted hover:text-charcoal rounded hover:bg-ivory transition-colors"
+                          >
+                            <Edit2 size={16} />
+                          </button>
+                          <button
+                            onClick={() => setProjectToDelete(proj)}
+                            title="Delete Project"
+                            className="p-1.5 text-charcoal-muted hover:text-red-500 rounded hover:bg-red-50 transition-colors"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 

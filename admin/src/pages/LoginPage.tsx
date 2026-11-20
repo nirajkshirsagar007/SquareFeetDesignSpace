@@ -49,7 +49,7 @@ export default function LoginPage() {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white border border-charcoal/10 rounded-lg shadow-sm p-8">
+        <div className="bg-white border border-charcoal/10 rounded-lg shadow-sm p-6 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <Input

@@ -11,9 +11,10 @@ import {
   DollarSign,
   Calendar,
   AlertTriangle,
+  ArrowLeft,
 } from "lucide-react";
 import { inquiries as inquiriesApi, type Inquiry, type InquiryStatus } from "@/lib/api";
-import { formatDateTime } from "@/lib/utils";
+import { formatDateTime, cn } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import Modal from "@/components/ui/Modal";
@@ -32,6 +33,7 @@ export default function InquiriesPage() {
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [searchQuery, setSearchQuery] = useState("");
+  const [mobileView, setMobileView] = useState<"list" | "detail">("list");
 
   // Delete modal state
   const [inquiryToDelete, setInquiryToDelete] = useState<Inquiry | null>(null);
@@ -58,7 +60,7 @@ export default function InquiriesPage() {
 
   const handleStatusChange = async (id: string, newStatus: InquiryStatus) => {
     try {
-      const updated = await inquiriesApi.updateStatus(id, newStatus);
+      await inquiriesApi.updateStatus(id, newStatus);
       setInquiriesList((prev) =>
         prev.map((item) => (item.id === id ? { ...item, status: newStatus } : item))
       );
@@ -81,6 +83,7 @@ export default function InquiriesPage() {
       setInquiriesList(remaining);
       if (selectedInquiry?.id === inquiryToDelete.id) {
         setSelectedInquiry(remaining[0] || null);
+        setMobileView("list");
       }
       setInquiryToDelete(null);
     } catch (err: any) {
@@ -106,13 +109,13 @@ export default function InquiriesPage() {
       {/* Header */}
       <div>
         <h1 className="font-display text-2xl font-bold text-charcoal">Customer Inquiries</h1>
-        <p className="text-sm text-charcoal-muted mt-1">
+        <p className="text-xs sm:text-sm text-charcoal-muted mt-1">
           Direct leads and project inquiries submitted through the public website
         </p>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-lg border border-charcoal/10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-white p-3 sm:p-4 rounded-lg border border-charcoal/10 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4">
         <div className="relative w-full md:w-80">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-muted" />
           <input
@@ -124,7 +127,7 @@ export default function InquiriesPage() {
           />
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none">
           {statusFilters.map((tab) => (
             <button
               key={tab.value}
@@ -143,8 +146,13 @@ export default function InquiriesPage() {
 
       {/* Main Two-Pane Inbox Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[500px]">
-        {/* Left Pane: List */}
-        <div className="lg:col-span-5 bg-white rounded-lg border border-charcoal/10 shadow-sm overflow-hidden flex flex-col">
+        {/* Left Pane: List (visible on desktop, or on mobile when mobileView === "list") */}
+        <div
+          className={cn(
+            "bg-white rounded-lg border border-charcoal/10 shadow-sm overflow-hidden flex flex-col lg:col-span-5",
+            mobileView === "detail" ? "hidden lg:flex" : "flex"
+          )}
+        >
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
               <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
@@ -162,6 +170,7 @@ export default function InquiriesPage() {
                     key={inq.id}
                     onClick={() => {
                       setSelectedInquiry(inq);
+                      setMobileView("detail");
                       if (inq.status === "New") {
                         handleStatusChange(inq.id, "Read");
                       }
@@ -206,14 +215,30 @@ export default function InquiriesPage() {
           )}
         </div>
 
-        {/* Right Pane: Detail View */}
-        <div className="lg:col-span-7 bg-white rounded-lg border border-charcoal/10 shadow-sm p-6 flex flex-col justify-between">
+        {/* Right Pane: Detail View (visible on desktop, or on mobile when mobileView === "detail") */}
+        <div
+          className={cn(
+            "bg-white rounded-lg border border-charcoal/10 shadow-sm p-4 sm:p-6 flex flex-col justify-between lg:col-span-7",
+            mobileView === "list" ? "hidden lg:flex" : "flex"
+          )}
+        >
           {selectedInquiry ? (
             <div className="space-y-6">
+              {/* Mobile Back Button (< lg) */}
+              <div className="lg:hidden pb-3 border-b border-charcoal/10">
+                <button
+                  onClick={() => setMobileView("list")}
+                  className="inline-flex items-center gap-2 text-xs font-medium text-charcoal-muted hover:text-charcoal px-2.5 py-1.5 rounded bg-ivory"
+                >
+                  <ArrowLeft size={14} />
+                  <span>Back to Inquiries List</span>
+                </button>
+              </div>
+
               {/* Header Info */}
-              <div className="flex items-start justify-between gap-4 pb-4 border-b border-charcoal/10">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 pb-4 border-b border-charcoal/10">
                 <div>
-                  <h2 className="text-xl font-bold text-charcoal">{selectedInquiry.name}</h2>
+                  <h2 className="text-lg sm:text-xl font-bold text-charcoal">{selectedInquiry.name}</h2>
                   <p className="text-xs text-charcoal-muted mt-1">
                     Submitted on {formatDateTime(selectedInquiry.submittedAt)}
                   </p>
@@ -241,10 +266,10 @@ export default function InquiriesPage() {
               </div>
 
               {/* Contact Metadata Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-ivory/40 p-4 rounded-lg border border-charcoal/10 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 bg-ivory/40 p-3 sm:p-4 rounded-lg border border-charcoal/10 text-xs">
                 <div className="flex items-center gap-2 text-charcoal">
                   <Mail size={16} className="text-gold flex-shrink-0" />
-                  <a href={`mailto:${selectedInquiry.email}`} className="hover:underline font-medium">
+                  <a href={`mailto:${selectedInquiry.email}`} className="hover:underline font-medium truncate">
                     {selectedInquiry.email}
                   </a>
                 </div>
@@ -276,9 +301,9 @@ export default function InquiriesPage() {
               </div>
 
               {/* Workflow Actions */}
-              <div className="pt-4 border-t border-charcoal/10 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-charcoal-muted font-medium">Change Status:</span>
+              <div className="pt-4 border-t border-charcoal/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="text-xs text-charcoal-muted font-medium">Status:</span>
                   <button
                     onClick={() => handleStatusChange(selectedInquiry.id, "New")}
                     className={`px-2.5 py-1 text-xs rounded border transition-colors ${
@@ -314,10 +339,10 @@ export default function InquiriesPage() {
                 <a
                   href={`mailto:${selectedInquiry.email}?subject=Square%20Feet%20Architects%20-%20Re:%20Your%20Inquiry`}
                   onClick={() => handleStatusChange(selectedInquiry.id, "Replied")}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-gold hover:bg-gold-dark text-white text-xs font-semibold rounded shadow-sm transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-gold hover:bg-gold-dark text-white text-xs font-semibold rounded shadow-sm transition-colors w-full sm:w-auto"
                 >
                   <Send size={14} />
-                  <span>Reply via Email Client</span>
+                  <span>Reply via Email</span>
                 </a>
               </div>
             </div>
