@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    @apply bg-ivory text-charcoal antialiased;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  /* Thin scrollbar for sidebar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-charcoal/20 rounded-full;
+  }
+}
+
+@layer components {
+  /* Gold underline accent used in headings */
+  .gold-underline::after {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    background: #c8964a;
+    margin-top: 0.5rem;
+  }
+}

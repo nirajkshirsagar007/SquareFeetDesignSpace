@@ -41,3 +41,11 @@ yarn-error.log*
 next-env.d.ts
 
 !.env.example
+
+# Sub-projects
+backend/node_modules/
+backend/dist/
+admin/node_modules/
+admin/dist/
+admin/.env.local
+
