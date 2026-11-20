@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { LayoutDashboard, FolderKanban, Mail, ExternalLink, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { SITE_URL } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -52,7 +53,7 @@ export default function Sidebar() {
 
         <div className="pt-4 mt-4 border-t border-white/10">
           <a
-            href="http://localhost:3000"
+            href={SITE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-between px-3.5 py-2 text-sm text-white/60 hover:text-gold transition-colors rounded hover:bg-white/5"

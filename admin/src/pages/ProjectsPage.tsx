@@ -11,7 +11,7 @@ import {
   XCircle,
   AlertTriangle,
 } from "lucide-react";
-import { projects as projectsApi, type Project, type ProjectCategory } from "@/lib/api";
+import { projects as projectsApi, SITE_URL, type Project, type ProjectCategory } from "@/lib/api";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import Modal from "@/components/ui/Modal";
@@ -215,7 +215,7 @@ export default function ProjectsPage() {
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <a
-                          href={`http://localhost:3000/projects/${proj.slug}`}
+                          href={`${SITE_URL}/projects/${proj.slug}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           title="View on Live Site"

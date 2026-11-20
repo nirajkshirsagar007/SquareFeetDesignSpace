@@ -13,6 +13,7 @@ import {
 import {
   projects as projectsApi,
   upload as uploadApi,
+  SITE_URL,
   type ProjectPayload,
   type ProjectCategory,
   type ProjectStatus,
@@ -240,7 +241,7 @@ export default function ProjectFormPage({ mode }: ProjectFormPageProps) {
         <div className="flex items-center gap-2">
           {mode === "edit" && (
             <a
-              href={`http://localhost:3000/projects/${slug}`}
+              href={`${SITE_URL}/projects/${slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium border border-charcoal/20 bg-white text-charcoal rounded hover:bg-ivory"
