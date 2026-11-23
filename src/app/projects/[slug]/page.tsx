@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCTA } from "@/components/projects/ProjectCTA";
+import { GalleryLightbox } from "@/components/projects/GalleryLightbox";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -203,34 +204,11 @@ export default async function ProjectDetailPage({ params }: Props) {
             )}
           </div>
 
-          {/* Gallery */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-8">
-            {project.gallery.map((img, i) => (
-              <Reveal
-                key={i}
-                delay={i * 0.1}
-                className={i === 0 ? "md:col-span-2" : ""}
-              >
-                <div
-                  className={`relative w-full overflow-hidden bg-muted ${
-                    i === 0 ? "aspect-[16/9]" : "aspect-[4/3] md:aspect-[1/1]"
-                  }`}
-                >
-                  <Image
-                    src={img}
-                    alt={`${project.title} gallery image ${i + 1}`}
-                    fill
-                    sizes={
-                      i === 0
-                        ? "100vw"
-                        : "(max-width: 768px) 100vw, 50vw"
-                    }
-                    className="object-cover transition-transform duration-1000 hover:scale-105"
-                  />
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          {/* Gallery with Interactive Lightbox */}
+          <GalleryLightbox
+            images={project.gallery}
+            projectTitle={project.title}
+          />
         </div>
       </section>
 
