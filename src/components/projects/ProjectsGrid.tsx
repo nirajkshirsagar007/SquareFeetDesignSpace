@@ -86,18 +86,13 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
             aria-label="Filter projects by title, location, or typology"
             className="relative w-full sm:max-w-md"
           >
-            <Search
-              size={16}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone pointer-events-none"
-              aria-hidden="true"
-            />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search projects by name, city, typology..."
               aria-label="Search architectural projects by name, location, or typology"
-              className="w-full pl-10 pr-9 py-2.5 bg-canvas border border-border text-sm text-ink placeholder:text-stone/60 outline-none transition-colors duration-200 focus:border-amber focus:ring-1 focus:ring-amber/20"
+              className="w-full px-4 pr-9 py-2.5 bg-canvas border border-border text-sm text-ink placeholder:text-stone/60 outline-none transition-colors duration-200 focus:border-amber focus:ring-1 focus:ring-amber/20"
             />
             {searchQuery && (
               <button
